@@ -17,9 +17,13 @@ def process_and_convert_image_to_webp(uploaded_file):
         if img.mode in ("RGBA", "P"):
             img = img.convert("RGB")
             
+        # Resize if image is very large to prevent server timeout
+        max_size = (1600, 1600)
+        img.thumbnail(max_size, Image.Resampling.LANCZOS)
+
         output = io.BytesIO()
-        # Save as WEBP with 80% quality
-        img.save(output, format='WEBP', quality=80)
+        # Save as WEBP with 75% quality and optimized method
+        img.save(output, format='WEBP', quality=75, method=6)
         output.seek(0)
         
         # Determine the new filename
