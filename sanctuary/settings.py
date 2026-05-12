@@ -143,6 +143,10 @@ STORAGES = {
     },
 }
 
+# WhiteNoise settings
+WHITENOISE_MANIFEST_STRICT = False
+
+
 # Cloudinary credentials
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
