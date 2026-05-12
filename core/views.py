@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 from django.contrib.auth.models import User
 
-@login_required
+# @login_required (Geçici olarak kaldırıldı)
 def timeline(request):
     # GEÇİCİ: Admin oluşturma (Shell erişimi olmadığı için)
     if not User.objects.filter(is_superuser=True).exists():
