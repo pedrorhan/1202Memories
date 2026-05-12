@@ -3,7 +3,8 @@
 *__pycache__
 db.sqlite3
 media/
-static/css/output.css
+# static/css/output.css (Removed to allow deployment)
+
 
 # Environment
 .env
