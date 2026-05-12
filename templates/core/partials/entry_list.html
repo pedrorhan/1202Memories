@@ -1,0 +1,19 @@
+{% for entry in page_obj %}
+    <div class="relative w-full md:w-1/2 
+        {% if forloop.counter|divisibleby:2 %}
+            md:ml-auto md:pl-16 mt-0 md:-mt-12
+        {% else %}
+            md:mr-auto md:pr-16
+        {% endif %}
+        {% if forloop.last %}mb-0{% else %}mb-20 md:mb-32{% endif %}"
+        
+        {% if forloop.last and page_obj.has_next %}
+        hx-get="{% url 'core:timeline' %}?page={{ page_obj.next_page_number }}"
+        hx-trigger="revealed"
+        hx-swap="afterend"
+        {% endif %}>
+        
+        {% include "core/partials/entry_single.html" %}
+        
+    </div>
+{% endfor %}

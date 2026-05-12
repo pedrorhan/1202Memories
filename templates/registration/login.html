@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex-grow flex items-center justify-center p-4 relative h-full w-full bg-paper">
+    
+    <div class="w-full max-w-sm relative z-10 px-8 py-16 text-center">
+        <div class="mb-16">
+            <h1 class="text-3xl font-serif italic text-ink-dark opacity-90">Sanctuary.</h1>
+            <div class="h-px w-12 bg-ink-dark/20 mx-auto mt-6"></div>
+        </div>
+        
+        <form method="post" class="space-y-10 text-left">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="text-red-800 text-xs text-center uppercase tracking-widest mb-6">
+                    Kimlik bilgileri hatalı.
+                </div>
+            {% endif %}
+            
+            <div class="space-y-1">
+                <input type="text" name="username" class="sanctuary-input font-serif italic text-lg" placeholder="Kullanıcı adı" required autofocus>
+            </div>
+            <div class="space-y-1">
+                <input type="password" name="password" class="sanctuary-input font-serif italic text-lg" placeholder="Şifre" required>
+            </div>
+            
+            <div class="pt-8 text-center">
+                <button type="submit" class="sanctuary-btn w-3/4">
+                    Mührü Aç
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

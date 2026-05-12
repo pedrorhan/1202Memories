@@ -1,0 +1,24 @@
+{% for m in milestones %}
+<div class="group flex flex-col items-end text-right border-b border-line pb-6">
+    <div class="flex items-center gap-3 mb-2">
+        {% if m.days_until_next == 0 %}
+        <span class="text-[9px] uppercase tracking-[0.2em] text-amber-800 font-semibold italic border border-amber-800/30 px-2 py-0.5 rounded-full bg-amber-50">
+            Bugün!
+        </span>
+        {% else %}
+        <span class="text-[9px] uppercase tracking-widest text-ink-light italic opacity-70">
+            Yıldönümüne {{ m.days_until_next }} gün kaldı
+        </span>
+        {% endif %}
+        <span class="text-[10px] uppercase tracking-widest text-ink-dark/50 font-sans">{{ m.date|date:"d M Y" }}</span>
+    </div>
+    <h3 class="font-serif text-xl text-ink-dark group-hover:text-ink-blue transition-colors">{{ m.title }}</h3>
+    {% if m.note %}
+    <p class="font-serif text-sm text-ink-dark/70 mt-2 italic max-w-sm leading-relaxed">{{ m.note }}</p>
+    {% endif %}
+</div>
+{% empty %}
+<div class="text-center py-12">
+    <p class="font-serif text-ink-light italic">Henüz bir dönüm noktası yazılmamış...</p>
+</div>
+{% endfor %}

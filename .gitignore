@@ -1,0 +1,15 @@
+# Django
+*.pyc
+*__pycache__
+db.sqlite3
+media/
+static/css/output.css
+
+# Environment
+.env
+venv/
+.DS_Store
+
+# Tailwind
+node_modules/
+tailwindcss

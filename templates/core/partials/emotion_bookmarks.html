@@ -1,0 +1,10 @@
+<div id="emotion-bookmarks" class="mb-12 flex flex-wrap gap-6 relative" {% if request.htmx %}hx-swap-oob="true"{% endif %}>
+    <button hx-get="{% url 'core:timeline' %}" hx-target="#timeline-entries" hx-swap="innerHTML" class="focus:outline-none text-[10px] uppercase tracking-widest font-sans pb-1 border-b transition-colors {% if not current_emotion %}border-ink-dark text-ink-dark font-bold{% else %}border-transparent text-ink-light hover:text-ink-dark{% endif %}">
+        Tüm Hatıralar
+    </button>
+    {% for emotion in emotions %}
+    <button hx-get="{% url 'core:timeline' %}?emotion={{ emotion.id }}" hx-target="#timeline-entries" hx-swap="innerHTML" class="focus:outline-none text-[10px] uppercase tracking-widest font-sans pb-1 border-b transition-colors {% if current_emotion == emotion.id %}border-ink-dark text-ink-dark font-bold{% else %}border-transparent text-ink-light hover:text-ink-dark{% endif %}">
+        {{ emotion.name }}
+    </button>
+    {% endfor %}
+</div>

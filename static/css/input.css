@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@config "../../tailwind.config.js";
+
+@theme {
+  --color-paper: #FAF9F6;
+  --color-paper-shade: #F0EBE1;
+  --color-ink-dark: #1C1F26;
+  --color-ink-blue: #1E3A8A;
+  --color-ink-light: #4A5568;
+  --color-line: #E5E0D8;
+  
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Lora", "Merriweather", Georgia, serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-dark);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Minimalist input without borders, just a bottom line if needed */
+  .sanctuary-input {
+    width: 100%;
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.5rem 0.5rem;
+    color: var(--color-ink-dark);
+    transition: border-color 0.3s ease;
+  }
+  
+  .sanctuary-input:focus {
+    outline: none;
+    border-bottom-color: var(--color-ink-blue);
+  }
+  
+  /* Elegant editorial button */
+  .sanctuary-btn {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--color-ink-dark);
+    background-color: transparent;
+    color: var(--color-ink-dark);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .sanctuary-btn:hover {
+    background-color: var(--color-ink-dark);
+    color: var(--color-paper);
+  }
+}

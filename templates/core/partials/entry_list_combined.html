@@ -1,0 +1,25 @@
+{% if request.htmx %}
+    {% include "core/partials/emotion_bookmarks.html" %}
+{% endif %}
+
+{% if todays_milestone %}
+<div class="relative w-full mx-auto md:w-8/12 mb-16 z-[45] bg-[#FDFBF7] border border-amber-900/10 shadow-sm px-8 py-6 flex flex-col items-center text-center">
+    <!-- Tape effect -->
+    <div class="absolute -top-3 flex justify-center w-full pointer-events-none">
+        <div class="w-10 h-6 bg-amber-900/10 backdrop-blur-sm rotate-3"></div>
+    </div>
+    
+    <span class="text-[9px] uppercase tracking-[0.3em] text-amber-900/50 font-sans mb-3 font-semibold">Bugün Bizi Biz Yapan Bir Gün</span>
+    <h3 class="font-serif text-2xl text-amber-950 mb-2">{{ todays_milestone.title }}</h3>
+    
+    {% if todays_milestone.note %}
+    <div class="w-12 h-px bg-amber-900/20 my-3"></div>
+    <p class="font-serif text-[15px] leading-relaxed text-amber-900/80 italic max-w-md">{{ todays_milestone.note }}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if pinned_entries %}
+    {% include "core/partials/pinned_list.html" %}
+{% endif %}
+{% include "core/partials/entry_list.html" %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto w-full px-6 py-12 md:py-24 relative min-h-screen">
+    
+
+    <!-- Left Page Wrapper for Form & Filters -->
+    <div class="mb-24 relative w-full md:w-1/2 md:mr-auto md:pr-16 z-20">
+        
+        <!-- Emotion Bookmarks -->
+        {% include "core/partials/emotion_bookmarks.html" %}
+
+        
+        <!-- Loading Overlay -->
+        <div id="upload-spinner" class="absolute inset-0 bg-paper/80 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 [&.htmx-request]:opacity-100 [&.htmx-request]:pointer-events-auto">
+            <svg class="animate-spin h-6 w-6 text-ink-dark mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-10" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                <path class="opacity-60" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-[10px] uppercase tracking-[0.2em] text-ink-dark/60 font-sans">İşleniyor</span>
+        </div>
+
+        <form hx-post="{% url 'core:add_entry' %}" hx-target="#timeline-entries" hx-swap="innerHTML" hx-encoding="multipart/form-data" hx-indicator="#upload-spinner" hx-on::after-request="if(event.detail.successful) { this.reset(); document.getElementById('file-name').innerText='Fotoğraf İliştir'; }" class="flex flex-col gap-6 relative z-10">
+            {% csrf_token %}
+            <textarea name="content" rows="4" class="w-full bg-transparent border-none resize-none focus:ring-0 focus:outline-none text-ink-dark placeholder-ink-dark/30 font-serif leading-loose text-[15px]" placeholder="Bugün neler hissettin?" required></textarea>
+            
+            <div class="flex justify-between items-end border-t border-line pt-4">
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-wrap items-center gap-6">
+                        <!-- Image Upload Button -->
+                        <div class="relative group">
+                            <input type="file" name="image" id="image-upload" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="document.getElementById('file-name').innerText = this.files[0] ? 'Fotoğraf Eklendi' : 'Fotoğraf İliştir';">
+                            <button type="button" class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-ink-dark/50 group-hover:text-ink-dark transition-colors duration-300 font-sans">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                </svg>
+                                <span id="file-name">Fotoğraf İliştir</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Icebreaker Checkbox -->
+                        <label class="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" name="is_icebreaker" class="peer sr-only">
+                            <div class="w-3 h-3 rounded-full border border-ink-dark/40 peer-checked:bg-red-800 peer-checked:border-red-800 transition-colors shadow-inner"></div>
+                            <span class="text-[10px] uppercase tracking-widest text-ink-dark/50 group-hover:text-ink-dark peer-checked:text-red-800 transition-colors font-sans">Konuşmamız Lazım</span>
+                        </label>
+                        
+                        <!-- Emotion Selector -->
+                        <div class="relative">
+                            <select name="emotion" class="bg-transparent border-b border-line text-[10px] uppercase tracking-widest text-ink-dark/70 hover:text-ink-dark focus:ring-0 focus:outline-none cursor-pointer font-sans appearance-none py-1 pr-6 pl-1">
+                                <option value="">Hissettiğim</option>
+                                {% for emotion in emotions %}
+                                <option value="{{ emotion.id }}">{{ emotion.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center text-ink-dark/50 pb-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="sanctuary-btn shrink-0">Kayda Geç</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Timeline Container -->
+    <div id="timeline-entries" class="flex flex-col gap-12 md:gap-0">
+        {% include "core/partials/entry_list_combined.html" %}
+    </div>
+
+</div>
+{% endblock %}

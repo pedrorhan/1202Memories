@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanctuary</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <!-- Google Fonts: Inter (Sans) and Lora (Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="min-h-screen bg-paper text-ink-dark selection:bg-paper-shade selection:text-ink-blue flex flex-col antialiased" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    
+    {% if user.is_authenticated %}
+    {% block extra_bg %}{% endblock %}
+
+    <!-- Global Notebook Spine (Center Fold) -->
+    <div class="hidden md:block fixed left-1/2 top-0 bottom-0 w-px bg-line/60 z-10 pointer-events-none"></div>
+    <div class="hidden md:block fixed left-1/2 top-0 bottom-0 w-8 -ml-4 bg-gradient-to-r from-transparent via-black/[0.02] to-transparent z-10 pointer-events-none"></div>
+    <div class="hidden md:block fixed left-1/2 top-0 bottom-0 w-16 -ml-8 bg-gradient-to-r from-transparent via-ink-dark/[0.01] to-transparent z-10 pointer-events-none"></div>
+
+    <nav class="absolute top-0 left-0 right-0 h-24 z-50 flex items-center justify-between px-8 md:px-16 pt-6">
+        <a href="{% url 'core:timeline' %}" class="text-xl font-serif italic tracking-wide text-ink-dark opacity-90 hover:opacity-100 transition-opacity">Sanctuary.</a>
+        <div class="flex items-center gap-6 text-sm text-ink-light font-sans uppercase tracking-widest text-[10px]">
+            <span>{{ user.username }}</span>
+            <a href="{% url 'core:milestones_list' %}" class="hover:text-ink-dark transition-colors">Dönüm Noktaları</a>
+            <form method="post" action="{% url 'logout' %}" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="hover:text-ink-dark transition-colors">Çıkış</button>
+            </form>
+        </div>
+    </nav>
+    <div class="h-24"></div> <!-- Spacer for absolute nav -->
+    {% endif %}
+
+    <main class="flex-grow flex flex-col relative w-full h-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Image Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-ink-dark/95 backdrop-blur-sm hidden items-center justify-center opacity-0 transition-opacity duration-300" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-[95vw] max-h-[95vh] object-contain rounded-sm shadow-2xl transform scale-95 transition-transform duration-300">
+        <button class="absolute top-8 right-8 text-paper/50 hover:text-paper transition-colors cursor-pointer" title="Kapat">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = imgSrc;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+                img.classList.remove('scale-95');
+                img.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            
+            lightbox.classList.add('opacity-0');
+            img.classList.remove('scale-100');
+            img.classList.add('scale-95');
+            
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                img.src = '';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
