@@ -6,14 +6,8 @@ from .models import Entry, Emotion, Milestone
 from .utils import process_and_convert_image_to_webp
 from datetime import date, datetime
 
-from django.contrib.auth.models import User
-
-# @login_required (Geçici olarak kaldırıldı)
+@login_required
 def timeline(request):
-    # GEÇİCİ: Admin oluşturma (Shell erişimi olmadığı için)
-    if not User.objects.filter(is_superuser=True).exists():
-        User.objects.create_superuser('admin', 'admin@example.com', 'admin1234')
-    
     emotion_id = request.GET.get('emotion')
     
     pinned_qs = Entry.objects.filter(is_icebreaker=True, is_acknowledged=False).select_related('author', 'category', 'emotion')
